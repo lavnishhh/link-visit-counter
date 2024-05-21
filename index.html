@@ -8,15 +8,14 @@
 </head>
 
 <body>
-    <script>
-        // Initialize the agent on page load.
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                console.log('Your IP address is:', data.ip);
-                // document.body.textContent = data.ip;
-            })
-            .catch(error => console.error('Error fetching IP address:', error));
+    <script type="module">
+
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js'
+
+        import { getFirestore, collection, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js'
+
+
+
 
         const fpPromise = import('https://fpjscdn.net/v3/1Y2mdeaJTsPpAk95P1we')
             .then(FingerprintJS => FingerprintJS.load({
@@ -24,14 +23,74 @@
             }))
 
         // Get the visitorId when you need it.
-        fpPromise
+        const visitorPromise = fpPromise
             .then(fp => fp.get())
-            .then(result => {
-                const visitorId = result.visitorId
-                document.body.textContent = visitorId;
-            })
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const team = urlParams.get('team');
+
+        const teams = ['1', '2', '3', '4', '5', '6', '7', 'test']
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDnfSYvZm635Y6wyDcO2jtb5qnrmIVmIbs",
+            authDomain: "link-reach-thing.firebaseapp.com",
+            projectId: "link-reach-thing",
+            storageBucket: "link-reach-thing.appspot.com",
+            messagingSenderId: "659414953715",
+            appId: "1:659414953715:web:f047b89930d88e43555186"
+        };
+
+        if (!teams.includes(team)) {
+            window.location.href = "https://www.instagram.com/tedxnhce/"
+            // return;
+        }
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+    
+
+        async function logDeviceAccess(teamId, deviceFingerprint) {
+            console.log(teamId, deviceFingerprint)
+            const db = getFirestore(app);
+
+            const data = {
+                "time":Date.now()
+            }
+
+            console.log("setting doc")
+
+            await setDoc(doc(db, "teams", teamId, "logs", deviceFingerprint), data);
+
+            // const teamRef = db.collection('teams').doc(teamId);
+            // const deviceLogsRef = teamRef.collection('logs').doc(deviceFingerprint);
+
+            // const deviceDoc = await deviceLogsRef.get();
+            // if (!deviceDoc.exists) {
+            //     // Log new device access
+            //     await deviceLogsRef.set({
+            //         fingerprint: deviceFingerprint,
+            //         timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            //     });
+            // }
+        }
+
+
+        async function logVisitor() {
+            const result = await visitorPromise
+
+            // Example usage
+            await logDeviceAccess(team, result.visitorId);
+            window.location.href = "https://www.instagram.com/tedxnhce/"
+        }
+
+        logVisitor()
+
 
     </script>
+    <div style="width: 100vw; height:100vh; display: flex; justify-content: center; align-items: center;">
+        <a>Please wait, do not close the tab.</a>
+    </div>
 </body>
 
 </html>
