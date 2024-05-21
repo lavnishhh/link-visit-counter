@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <script>
         // Initialize the agent on page load.
@@ -12,11 +14,24 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Your IP address is:', data.ip);
-                document.body.textContent = data.ip;
+                // document.body.textContent = data.ip;
             })
             .catch(error => console.error('Error fetching IP address:', error));
 
-      
-      </script>
+        const fpPromise = import('https://fpjscdn.net/v3/1Y2mdeaJTsPpAk95P1we')
+            .then(FingerprintJS => FingerprintJS.load({
+                region: "ap"
+            }))
+
+        // Get the visitorId when you need it.
+        fpPromise
+            .then(fp => fp.get())
+            .then(result => {
+                const visitorId = result.visitorId
+                document.body.textContent = visitorId;
+            })
+
+    </script>
 </body>
+
 </html>
