@@ -55,18 +55,15 @@
         const app = initializeApp(firebaseConfig);
     
 
-        async function logDeviceAccess(teamId, deviceFingerprint) {
-            console.log(teamId, deviceFingerprint)
+        async function logDeviceAccess(teamId, deviceInfo) {
+            console.log(teamId, deviceInfo.visitorId)
             const db = getFirestore(app);
 
-            const data = {
-                "time":Date.now(),
-                
-            }
+            deviceInfo['time'] = Date.now()
 
             console.log("setting doc")
 
-            await setDoc(doc(db, "teams", teamId, "logs", deviceFingerprint), data);
+            await setDoc(doc(db, "teams", teamId, "logs", deviceInfo.visitorId), deviceInfo);
 
             // const teamRef = db.collection('teams').doc(teamId);
             // const deviceLogsRef = teamRef.collection('logs').doc(deviceFingerprint);
@@ -86,7 +83,7 @@
             const result = await visitorPromise
 
             // Example usage
-            await logDeviceAccess(team, result.visitorId);
+            await logDeviceAccess(team, result);
             window.location.href = "https://www.instagram.com/tedxnhce/"
         }
 
@@ -95,7 +92,7 @@
 
     </script>
     <div style="width: 100vw; height:100vh; display: flex; justify-content: center; align-items: center;">
-        <a id="text-show">Please wait, do not close the tab.</a>
+        <a id="text-show">Please wait, do not close the tab.<br>(Ts does not work on brave)</a>
     </div>
 </body>
 
