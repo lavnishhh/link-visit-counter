@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="module">
+
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js'
+
+        import { getFirestore, collection, doc, setDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js'
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDnfSYvZm635Y6wyDcO2jtb5qnrmIVmIbs",
+            authDomain: "link-reach-thing.firebaseapp.com",
+            projectId: "link-reach-thing",
+            storageBucket: "link-reach-thing.appspot.com",
+            messagingSenderId: "659414953715",
+            appId: "1:659414953715:web:f047b89930d88e43555186"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app)
+
+        async function getLogsCountForTeams() {
+            try {
+                const teamsCollection = collection(db, "teams");
+                console.log(teamsCollection)
+                const teamDocsSnapshot = await getDocs(teamsCollection);
+                console.log(teamDocsSnapshot);
+                teamDocsSnapshot.forEach(async (teamDoc) => {
+                    console.log(teamDoc)
+                    const logsSubcollection = collection(db, `teams/${teamDoc.id}/logs`);
+                    const logsSnapshot = await getDocs(logsSubcollection);
+                    document.getElementById("leaderboard").innerHTML += `
+                    <tr>
+                        <td style="text-align: center;">${teamDoc.id}</td>
+                        <td style="text-align: center;">${logsSnapshot.size}</td>
+                    </tr>
+                        `
+                    console.log(`Team ${teamDoc.id} has ${logsSnapshot.size} logs`);
+                });
+            } catch (error) {
+                console.error("Error getting logs count for teams: ", error);
+            }
+        }
+
+        getLogsCountForTeams();
+
+
+    </script>
+    <div style="width: 100vw; height:100vh; display: flex; justify-content: center; align-items: center;">
+        <table id="leaderboard">
+            <tr>
+                <th style="width: 100px;">Team</th>
+                <th>People Reached</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

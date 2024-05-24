@@ -29,16 +29,11 @@
         const urlParams = new URLSearchParams(window.location.search);
         const team = urlParams.get('team');
 
-        const teams = ['1', '2', '3', '4', '5', '6', '7', 'test']
+        const teams = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', 'test']
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyDnfSYvZm635Y6wyDcO2jtb5qnrmIVmIbs",
-            authDomain: "link-reach-thing.firebaseapp.com",
-            projectId: "link-reach-thing",
-            storageBucket: "link-reach-thing.appspot.com",
-            messagingSenderId: "659414953715",
-            appId: "1:659414953715:web:f047b89930d88e43555186"
+            
         };
 
         if (!teams.includes(team)) {
@@ -46,7 +41,7 @@
             new Promise((resolve, reject) => {
                 setTimeout(resolve, 3000)
             }).then(()=>{
-                window.location.href = "https://www.instagram.com/tedxnhce/"
+                window.location.replace('https://www.instagram.com/tedxnhce/');
             })
             // return;
         }
@@ -84,7 +79,7 @@
 
             // Example usage
             await logDeviceAccess(team, result);
-            window.location.href = "https://www.instagram.com/tedxnhce/"
+            window.location.replace('https://www.instagram.com/tedxnhce/');
         }
 
         logVisitor()
@@ -92,7 +87,7 @@
 
     </script>
     <div style="width: 100vw; height:100vh; display: flex; justify-content: center; align-items: center;">
-        <a id="text-show">Please wait, do not close the tab.<br>(Ts does not work on brave)</a>
+        <a id="text-show">Please wait, do not close the tab.<br>(This does not work on brave)</a>
     </div>
 </body>
 
