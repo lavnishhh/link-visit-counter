@@ -1,0 +1,1 @@
+A Firebase project that was used to facilitate a club event. This involved giving a link with different query parameters (link/?team="01"), tasking each team to competitively reach thw widest audience. Used Fingerprint.js to attain device ID, further storing each ID in every team's collection. Each team's collection size determined the number of devices reached.
